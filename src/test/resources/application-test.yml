@@ -1,0 +1,114 @@
+management:
+    security:
+        enabled: false  #disable the spring security on the management endpoints like /env, /refresh etc.
+    endpoints:
+      web:
+        exposure:
+          include: info,health,prometheus,env,httptrace,loggers,endpoints
+    metrics:
+      tags:
+        application: ${spring.application.name}
+unique:
+  field:
+    validation:
+      enabled : false
+logging:
+  level:
+    ROOT: ERROR
+    reactor:
+      netty: INFO
+    com.atd.domain.microservices.processorder: TRACE
+    com.atd.domain.microservices.processorder.service.impl : INFO
+
+kafka:
+  topic:
+    order: TEST_PLACEORDER
+    holdrelease: TEST_HOLD_RELEASE
+    analytics: TEST_SERVICE_ANALYTICS
+    modify:
+      order: TEST_MODIFY_PLACEORDER
+  bootstrap:
+    server:
+      url: localhost:9093
+  onhand:
+    topic: TEST_PRODUCT_AVAILABILITY
+    table: XXATDMSA_PRODUCT_ONHAND_QTY
+    national:
+      topic: TEST_PRODUCT_AVAILABILITY
+      table: XXATDMSA_PRODUCT_ONHAND_QTY_NT
+  orderhistory:
+    header:
+      topic: TEST_ORDERHISTORY_HEADER
+      table: XXATDMSA_ORDER_HEADERS
+    line:
+      topic: TEST_ORDERHISTORY_LINE
+      table: XXATDMSA_ORDER_LINES
+  vendor:
+    thirdparty:
+      topic: TEST_THVIV
+      table: XXATDMSA_VI_INVENTORY
+    viv:
+      topic: TEST_THVIV
+      table: XXATDINV_VIV_INVENTORY_EDI
+  security:
+    protocol: SSL
+webclient:
+  order:
+    uniquedata:
+      check:
+        url: https://r-qa-msa.gcp.atd-us.com/processorderuniquecheck/origsysdocumentref/%1$s
+        insert:
+          url: https://r-qa-msa.gcp.atd-us.com/processorderuniquecheck/insertuniquecheck/
+  futureroutes:
+      routes:
+        url: futureroutes/
+      order:
+        url: futureroutes/order
+      cutofftimes:
+        url: futureroutes/cutofftimes
+  product:
+    findbyproductNo:
+      url: https://r-qa-msa.gcp.atd-us.com/product/findByProductNumberAndOrgID/%1$s/%2$s
+    xref:
+      url: https://develop-msa.gcp.atd-us.com/productxref/productxref/
+  thirdpartytools:
+    vendorProductAvailability:
+      url: https://r-qa-msa.gcp.atd-us.com/thirdpartytools/vendorProductAvailability/%1$s?productNumbers=%2$s
+  vendorproductavailability:
+    vendorspokemappings:
+      url: https://r-qa-msa.gcp.atd-us.com/vendorrelationship/get/vendorspokemappings/
+    vendorproduct:
+      url: https://r-qa-msa.gcp.atd-us.com/vendorproductavailability/product/%1$s
+  location:
+    siteuse:
+      id:
+        url: https://r-qa-msa.gcp.atd-us.com/customerlocation/location/getSiteUseBySiteUseID/%1$s
+      url: https://r-qa-msa.gcp.atd-us.com/customerlocation/location/get/%1$s/siteUse
+  freight:
+    account:
+      url: https://r-qa-msa.gcp.atd-us.com/fndconfig/freightaccounts/customer/%1$s
+  organizationunit:
+    organizationID:
+      url: https://r-qa-msa.gcp.atd-us.com/organizationunit/organizationId/%1$s
+
+ssl:
+  truststore:
+    password: testssl
+    location: ./src/test/resources/certs/kafka.client.truststore.jks
+  endpoint:
+    identification:
+      algorithm:
+
+connection:
+  timeout: 5000
+  
+uniquedata:
+  check:
+    timeout: 1000
+
+apigateway:
+  #url: https://develop-msa.gcp.atd-us.com
+  #url: https://pj-1dx-msa.gcp.atd-us.com
+  #url: https://pj-p1dx-msa.gcp.atd-us.com
+  url: https://r-qa-msa.gcp.atd-us.com
+

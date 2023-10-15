@@ -1,0 +1,46 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ediinvoicelistener-configmap
+  namespace: edi-platform
+data:
+  #Environment-agnostic configs
+  jaeger.collector.url: "http://zipkin.monitoring.svc:9411"
+  kafka.groupid: invoiceheader
+  kafka.security.protocol: SSL
+  kafka.max.request.size: "8728640"
+  backlog.cron.expression: "0 0/5 * * * ?"
+  edi.config.url: http://apigateway:9093/ediconfig/?key=%1$s&value=%2$s
+  all.configs.url: http://apigateway:9093/ediconfig/
+  edi.analytics.data.url: http://apigateway:9093/edianalyticsdata/
+  kafka.outbound.file.rootKey: after
+  kafka.outbound.file.secondaryRootKey: N/A
+  kafka.outbound.file.nodeKey: N/A
+  kafka.outbound.file.secondaryNodeKey: N/A
+  trx.number.field: TRX_NUMBER
+  customer.id.field: CUST_ACCOUNT_ID
+  line.count.field: LINES_COUNT
+  tax.count.field: TAX_COUNT
+  allowance.count.field: ALLOWANCE_COUNT
+  process.flag.field: PROCESS_FLAG
+  line.number.field: EDI_LINE_ID
+  document.type.field: DOCUMENT_TYPE
+  backlog.collection: INVOICE_BACKLOG
+  line.collection: 810_LINE
+  tax.collection: 810_TAX
+  allowance.collection: 810_ALLOWANCE
+  #Develop
+  dev.kafka.bootstrap.server.url: kafka-dev-2.gcp.atd-us.icd:31090
+  dev.kafka.topic.outbound: DMSA810HDRIB
+  dev.kafka.topic.inbound: DEDIMAPPER
+  dev.kafka.analytic.topic: DEDIAPIGATEWAYANALYTICS
+  #QA
+  qa.kafka.bootstrap.server.url: kafka-xat-2.gcp.atd-us.icd:31090
+  qa.kafka.topic.outbound: MSA810HDRIB
+  qa.kafka.topic.inbound: EDIMAPPER
+  qa.kafka.analytic.topic: EDIAPIGATEWAYANALYTICS
+  #Production
+  prod.kafka.bootstrap.server.url: kafka-prod-msa-int-2.gcp.atd-us.icd:31090
+  prod.kafka.topic.outbound: MSA810HDRIB
+  prod.kafka.topic.inbound: EDIMAPPER
+  prod.kafka.analytic.topic: EDIAPIGATEWAYANALYTICS

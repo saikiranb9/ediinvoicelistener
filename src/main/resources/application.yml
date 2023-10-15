@@ -1,0 +1,38 @@
+management:
+  security:
+    enabled: false  #disable the spring security on the management endpoints like /env, /refresh etc.
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus,env,httptrace,loggers
+
+spring:
+  application:
+    name: ediinvoicelistener   #service name
+
+  zipkin:
+    base-url: ${JAEGER_COLLECTOR_URL}
+    service:
+      name: ediinvoicelistener
+    enabled: true
+  sleuth:
+    opentracing:
+      enabled: true
+    trace-id128: true
+    sampler:
+      probability: 1.0
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.data.mongodb.core: INFO
+    org.springframework.data.mongodb.MongoTemplate: INFO
+    org.springframework.data.mongodb.ReactiveMongoTemplate: INFO
+    org.springframework.data.mongodb.repository.Query: INFO
+
+server:
+  port: 9100
+
